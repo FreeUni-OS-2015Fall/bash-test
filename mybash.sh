@@ -18,7 +18,7 @@ display_summary () {
     echo -e "${green}SUCCESS${endColor}"
   else
     echo -e "${red}FAIL" >&2
-    cat $2 >&2
+    cat "$2" >&2
     printf "${endColor}"
   fi
 }
@@ -34,12 +34,12 @@ run_tests () {
     base_name=$(basename $f)
     out_file=$1/$out_dir"${base_name%.*}.out"
     error_file=$1/$err_dir"${base_name%.*}.err"
-    # echo $out_file
+    # echo "$error_file"
 
     sh $f > "$out_file" 2> "$error_file"
     return_code=$?
 
-    display_summary $return_code $error_file
+    display_summary $return_code "$error_file"
 
     ((counter++))
   done
