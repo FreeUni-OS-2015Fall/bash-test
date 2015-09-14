@@ -1,11 +1,5 @@
 #! /bin/bash
 
-echo ""?"" | "$UNDER_TEST"
-if [ $? -eq 0 ]
-then
-  status=0
-else
-  status=1
-fi
+echo "?" | "$UNDER_TEST"
 
-exit $status
+exit $?
