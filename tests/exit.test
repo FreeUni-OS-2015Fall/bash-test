@@ -1,5 +1,5 @@
 #! /bin/bash
 
-echo "exit" | "$UNDER_TEST"
+$UNDER_TEST -c "exit"
 
 exit $?

@@ -7,8 +7,8 @@ yellow='\x1B[0;33m'
 blue='\x1B[0;34m'
 endColor='\x1B[0m'
 
-test_dir=/home/gkiko/Desktop/bash/tests
-assign_dir=/home/gkiko/Desktop/bash/assigns
+test_dir=./tests
+assign_dir=./assigns
 out_dir=outs/
 err_dir=errors/
 
@@ -52,7 +52,7 @@ do
   do
     if [[ $each_assign == *"assign1"* ]]
     then
-      find "$each_assign" -type f -executable | while read line; do
+      find "$each_assign" -perm +111 -type f | while read line; do
         # echo "---" $each_assign
         export UNDER_TEST=$line
         run_tests "$each_assign"

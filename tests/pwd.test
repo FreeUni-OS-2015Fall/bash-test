@@ -1,16 +1,14 @@
 #! /bin/bash
 
-tmp_file=cd.tmp
-tmp_dir=fsh_cd_test
+tmp_dir=$(mktemp -dt pwd)
 
-mkdir $tmp_dir
-echo "cd $tmp_dir;pwd | sed 's#.*/##'" | "$UNDER_TEST" | tee $tmp_file
-if [ "$(cat $tmp_file)" = "$tmp_dir" ]
+val=$($UNDER_TEST -c "cd $tmp_dir;pwd")
+if [ "$val" = "$tmp_dir" ]
 then
   status=0
 else
   status=1
 fi
 
-rm -r $tmp_file $tmp_dir
+rm -r $tmp_dir
 exit $status

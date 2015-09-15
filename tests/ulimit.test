@@ -1,7 +1,7 @@
 #! /bin/bash
 
-tmp_file=ulimit.tmp
-echo "ulimit -a" | "$UNDER_TEST" | tee $tmp_file
+tmp_file=$(mktemp -t ulimit)
+$UNDER_TEST -c "ulimit -a" | tee $tmp_file
 
 line_num=$(cat $tmp_file | wc -l)
 if [ $line_num -ne 16 ]; then
@@ -9,11 +9,10 @@ if [ $line_num -ne 16 ]; then
   exit 1
 fi
 
-arr=( 1 2 3 )
-# declare -a flags=( "-c" "-d" "-e" "-f" "-i" )
+flags=( '-c' '-d' '-u' '-f' '-v' '-e' )
 for i in "${flags[@]}"
 do
-  ulimit_res=$(echo "ulimit $i" | "$UNDER_TEST" | tee $tmp_file)
+  ulimit_res=$($UNDER_TEST -c "ulimit $i")
   if [ -z "$ulimit_res" ]; then
     >&2 echo "ulimit $i value empty"
     exit 1
@@ -21,4 +20,4 @@ do
 done
 
 rm $tmp_file
-exit 1
+exit 0
