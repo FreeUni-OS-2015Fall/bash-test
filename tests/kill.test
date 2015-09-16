@@ -1,0 +1,13 @@
+#! /bin/bash
+
+sleep 100 &
+pid=$!
+echo process started with $pid
+
+kill_res=$($UNDER_TEST -c "kill -9 $pid")
+if [ $kill_res -ne 0 ]; then
+  >&2 echo "kill exited with $kill_res"
+  exit 1
+fi
+
+exit 0

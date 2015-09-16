@@ -6,7 +6,7 @@ if [ $line_num -ne 16 ]; then
   exit 1
 fi
 
-flags=( '-q' '-u' '-p' '-s' )
+flags=( '-q' '-u' '-p' '-s' '-e' )
 for i in "${flags[@]}"
 do
   ulimit_res=$($UNDER_TEST -c "ulimit $i")
@@ -15,5 +15,17 @@ do
     exit 1
   fi
 done
+
+ulimit_res=$($UNDER_TEST -c "ulimit -n 1025; ulimit -n")
+if [ $ulimit_res -ne 1025 ]; then
+  >&2 echo "ulimit -n returned incorrect value"
+  exit 1
+fi
+
+ulimit_res=$(ulimit -s 100; $UNDER_TEST -c "ulimit -s")
+if [ $ulimit_res -ne 100 ]; then
+  >&2 echo "ulimit -s returned incorrect value"
+  exit 1
+fi
 
 exit 0
