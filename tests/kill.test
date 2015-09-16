@@ -4,9 +4,17 @@ sleep 100 &
 pid=$!
 echo process started with $pid
 
-kill_res=$($UNDER_TEST -c "kill -9 $pid")
-if [ $kill_res -ne 0 ]; then
+$UNDER_TEST -c "kill -9 $pid"
+kill_res=$?
+# >&2 echo $kill_res
+if [ -z "$kill_res" ] && [ $kill_res -ne 0] ; then
   >&2 echo "kill exited with $kill_res"
+  exit 1
+fi
+
+if ps -p $pid
+then
+  >&2 echo "$pid is running. should be dead"
   exit 1
 fi
 
