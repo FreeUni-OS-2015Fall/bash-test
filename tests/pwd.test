@@ -1,6 +1,6 @@
 #! /bin/bash
 
-tmp_dir=$(mktemp -dt pwd)
+tmp_dir=$(mktemp -d)
 
 val=$($UNDER_TEST -c "cd $tmp_dir;pwd")
 if [ "$val" = "$tmp_dir" ]

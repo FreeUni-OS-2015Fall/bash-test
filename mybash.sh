@@ -36,7 +36,7 @@ run_tests () {
     error_file=$1/$err_dir"${base_name%.*}.err"
     # echo "$error_file"
 
-    sh $f > "$out_file" 2> "$error_file"
+    bash $f > "$out_file" 2> "$error_file"
     return_code=$?
 
     display_summary $return_code "$error_file"

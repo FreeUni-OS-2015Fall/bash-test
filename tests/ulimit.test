@@ -1,15 +1,12 @@
 #! /bin/bash
 
-tmp_file=$(mktemp -t ulimit)
-$UNDER_TEST -c "ulimit -a" | tee $tmp_file
-
-line_num=$(cat $tmp_file | wc -l)
+line_num=$($UNDER_TEST -c "ulimit -a" | wc -l)
 if [ $line_num -ne 16 ]; then
   >&2 echo "ulimit -a does not output 16 lines"
   exit 1
 fi
 
-flags=( '-c' '-d' '-u' '-f' '-v' '-e' )
+flags=( '-q' '-u' '-p' '-s' )
 for i in "${flags[@]}"
 do
   ulimit_res=$($UNDER_TEST -c "ulimit $i")
@@ -19,5 +16,4 @@ do
   fi
 done
 
-rm $tmp_file
 exit 0
