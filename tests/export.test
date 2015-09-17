@@ -4,7 +4,7 @@ $UNDER_TEST -c "exit 1"
 returt_status=$?
 echo process exited with $returt_status
 if [ $returt_status -ne 1 ]; then
-  >&2 echo "should be $returt_status"
+  >&2 echo "exit status should be $returt_status"
   exit 1
 fi
 
@@ -21,4 +21,4 @@ if [ "$echo_res" != "export var exmaple" ] ; then
   exit 1
 fi
 
-exit 1
+exit 0

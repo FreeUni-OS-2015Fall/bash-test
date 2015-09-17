@@ -1,0 +1,21 @@
+#! /bin/bash
+
+bool_res=$($UNDER_TEST -c "ls none_existing_dir || echo no dir")
+if [ $bool_res != "no dir" ]; then
+  >&2 echo "1 no result from echo"
+  exit 1
+fi
+
+bool_res=$($UNDER_TEST -c "ls / || echo no dir")
+if [ $bool_res == "no dir" ]; then
+  >&2 echo "2 echo should not output anything"
+  exit 1
+fi
+
+bool_res=$($UNDER_TEST -c "ls / && ls -l -h && echo no dir")
+if [ $bool_res != "no dir" ]; then
+  >&2 echo "3 no result from echo"
+  exit 1
+fi
+
+exit 0

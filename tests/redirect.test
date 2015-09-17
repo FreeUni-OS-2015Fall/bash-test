@@ -1,0 +1,31 @@
+#! /bin/bash
+
+tmp_file1=$(mktemp)
+tmp_file2=$(mktemp)
+
+compare_and_print () {
+  cmp --silent $1 $2
+  cmp_status=$?
+  if [ "$cmp_status" != 0 ]; then
+    >&2 echo "redirect results differ"
+    exit 1
+  fi
+}
+
+# redirect1
+wc -l /etc/passwd > $tmp_file1
+$UNDER_TEST -c "wc -l /etc/passwd > $tmp_file2"
+compare_and_print $tmp_file1 $tmp_file2
+
+# redirect2
+cat /etc/passwd >> $tmp_file1
+$UNDER_TEST -c "cat /etc/passwd >> $tmp_file2"
+compare_and_print $tmp_file1 $tmp_file2
+
+# redirect3
+cat < /etc/passwd > $tmp_file1
+$UNDER_TEST -c "cat < /etc/passwd > $tmp_file2"
+compare_and_print $tmp_file1 $tmp_file2
+
+rm $tmp_file2 $tmp_file1
+exit 0
