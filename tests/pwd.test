@@ -1,12 +1,14 @@
 #! /bin/bash
 
 tmp_dir=$(mktemp -d)
+echo "created tmp dir $tmp_dir"
 
 val=$($UNDER_TEST -c "cd $tmp_dir;pwd")
 if [ "$val" = "$tmp_dir" ]
 then
   status=0
 else
+  >&2 echo "pwd from $tmp_dir retured $val"
   status=1
 fi
 

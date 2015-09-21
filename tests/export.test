@@ -1,13 +1,5 @@
 #! /bin/bash
 
-$UNDER_TEST -c "exit 1"
-returt_status=$?
-echo process exited with $returt_status
-if [ $returt_status -ne 1 ]; then
-  >&2 echo "exit status should be $returt_status"
-  exit 1
-fi
-
 echo_res=$($UNDER_TEST -c "echo ""test 123 \n""")
 if [ "$echo_res" != "test 123 n" ] ; then
   >&2 echo "echo output not qeual: $echo_res"

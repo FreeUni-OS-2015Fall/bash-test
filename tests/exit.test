@@ -1,5 +1,17 @@
 #! /bin/bash
 
-$UNDER_TEST -c "exit"
+exit_code_test () {
+  echo process exited with $1
+  if [ $1 -ne $2 ]; then
+    >&2 echo "exit status should be $2 but got $1"
+    exit 1
+  fi
+}
 
-exit $?
+$UNDER_TEST -c "exit"
+exit_code_test $? 0
+
+$UNDER_TEST -c "exit 1"
+exit_code_test $? 1
+
+exit 0

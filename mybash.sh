@@ -8,6 +8,7 @@ blue='\x1B[0;34m'
 endColor='\x1B[0m'
 
 test_dir=./tests
+# assign_dir=/home/gkiko/Desktop
 assign_dir=./assigns
 out_dir=outs/
 err_dir=errors/
@@ -34,12 +35,10 @@ run_tests () {
     base_name=$(basename $f)
     out_file=$1/$out_dir"${base_name%.*}.out"
     error_file=$1/$err_dir"${base_name%.*}.err"
-    # echo "$error_file"
 
     bash $f > "$out_file" 2> "$error_file"
-    return_code=$?
 
-    display_summary $return_code "$error_file"
+    display_summary $? "$error_file"
 
     ((counter++))
   done
@@ -50,7 +49,7 @@ for each_group in $assign_dir/*
 do
   for each_assign in $each_group/*
   do
-    if [[ $each_assign == *"assign1"* ]]
+    if [[ $each_assign =~ [Pp]roject1|[Aa]ssign1 ]]
     then
       find "$each_assign" -perm +111 -type f | while read line; do
         # echo "---" $each_assign

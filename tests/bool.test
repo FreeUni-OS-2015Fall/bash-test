@@ -1,20 +1,24 @@
 #! /bin/bash
 
-bool_res=$($UNDER_TEST -c "ls none_existing_dir || echo no dir")
-if [ $bool_res != "no dir" ]; then
-  >&2 echo "1 no result from echo"
+bool_res1=$(ls none_existing_dir 2>/dev/null || echo no dir)
+bool_res=$($UNDER_TEST -c "ls none_existing_dir 2>/dev/null || echo no dir")
+# >&2 echo $bool_res1
+if [ "$bool_res" != "$bool_res1" ]; then
+  >&2 echo "bool test #1 failed"
   exit 1
 fi
 
+bool_res1=$(ls / || echo no dir)
 bool_res=$($UNDER_TEST -c "ls / || echo no dir")
-if [ $bool_res == "no dir" ]; then
-  >&2 echo "2 echo should not output anything"
+if [ "$bool_res" != "$bool_res1" ]; then
+  >&2 echo "bool test #2 failed"
   exit 1
 fi
 
+bool_res1=$(ls / && ls -l -h && echo no dir)
 bool_res=$($UNDER_TEST -c "ls / && ls -l -h && echo no dir")
-if [ $bool_res != "no dir" ]; then
-  >&2 echo "3 no result from echo"
+if [ "$bool_res" != "$bool_res1" ]; then
+  >&2 echo "bool test #3 failed"
   exit 1
 fi
 

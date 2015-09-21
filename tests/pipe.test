@@ -1,14 +1,14 @@
 #! /bin/bash
 
 tmp_file1=$(mktemp)
-ls -l /etc | tail -n +2 | sort > $tmp_file1
-
 tmp_file2=$(mktemp)
+echo "created tmp files $tmp_file1 $tmp_file2"
+
+ls -l /etc | tail -n +2 | sort > $tmp_file1
 $UNDER_TEST -c "ls -l /etc | tail -n +2 | sort" > $tmp_file2
 
 cmp --silent $tmp_file1 $tmp_file2
 cmp_status=$?
->&2 echo $tmp_file1
 if [ "$cmp_status" != 0 ]; then
   >&2 echo "pipe results differ"
   exit 1
