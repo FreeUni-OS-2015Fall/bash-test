@@ -1,7 +1,7 @@
 #! /bin/bash
 
 bool_res1=$(ls none_existing_dir 2>/dev/null || echo no dir)
-bool_res=$($UNDER_TEST -c "ls none_existing_dir 2>/dev/null || echo no dir")
+bool_res=$($UNDER_TEST -c "ls none_existing_dir || echo no dir")
 # >&2 echo $bool_res1
 if [ "$bool_res" != "$bool_res1" ]; then
   >&2 echo "bool test #1 failed"
@@ -15,10 +15,17 @@ if [ "$bool_res" != "$bool_res1" ]; then
   exit 1
 fi
 
-bool_res1=$(ls / && ls -l -h && echo no dir)
-bool_res=$($UNDER_TEST -c "ls / && ls -l -h && echo no dir")
+bool_res1=$(ls / && ls -l && echo no dir)
+bool_res=$($UNDER_TEST -c "ls / && ls -l && echo no dir")
 if [ "$bool_res" != "$bool_res1" ]; then
   >&2 echo "bool test #3 failed"
+  exit 1
+fi
+
+bool_res1=$(ls / && ls none_existing_dir || echo no dir)
+bool_res=$($UNDER_TEST -c "ls / && ls none_existing_dir || echo no dir")
+if [ "$bool_res" != "$bool_res1" ]; then
+  >&2 echo "bool test #4 failed"
   exit 1
 fi
 

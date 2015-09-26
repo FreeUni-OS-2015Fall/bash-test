@@ -1,0 +1,19 @@
+#! /bin/bash
+
+type_res1=$(type -a pwd)
+type_res=$($UNDER_TEST -c "type pwd")
+# >&2 echo $bool_res1
+if [ "$type_res" != "$type_res1" ]; then
+  >&2 echo "type test #1 failed"
+  exit 1
+fi
+
+type_res1=$(type -a cd)
+type_res=$($UNDER_TEST -c "type cd")
+# >&2 echo $bool_res1
+if [ "$type_res" != "$type_res1" ]; then
+  >&2 echo "type test #2 failed"
+  exit 1
+fi
+
+exit 0
