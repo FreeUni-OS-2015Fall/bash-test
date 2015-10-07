@@ -1,16 +1,18 @@
 #! /bin/bash
 
-echo_res=$($UNDER_TEST -c "echo ""test 123 \n""")
-if [ "$echo_res" != "test 123 n" ] ; then
-  >&2 echo "echo output not qeual: $echo_res"
-  exit 1
+res=0
+
+echo_res=$($UNDER_TEST -c "echo test 123")
+if [ "$echo_res" != "test 123" ] ; then
+  >&2 echo "echo output not qeual: <$echo_res>"
+  res=1
 fi
 
 export TEST_123="export var exmaple"
 echo_res=$($UNDER_TEST -c "echo $TEST_123")
 if [ "$echo_res" != "export var exmaple" ] ; then
-  >&2 echo "exported var not equal: $echo_res"
-  exit 1
+  >&2 echo "exported var not equal: <$echo_res>"
+  res=1
 fi
 
-exit 0
+exit $res
