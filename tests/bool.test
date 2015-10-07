@@ -23,4 +23,11 @@ if [ "$bool_res" != "$bool_res1" ]; then
   final_res=1
 fi
 
+bool_res1=$(ls / && ls none_existing_dir || echo no dir)
+bool_res=$($UNDER_TEST -c "ls / && ls none_existing_dir || echo no dir")
+if [ "$bool_res" != "$bool_res1" ]; then
+  >&2 echo "bool test #4 failed"
+  final_res=1
+fi
+
 exit $final_res
