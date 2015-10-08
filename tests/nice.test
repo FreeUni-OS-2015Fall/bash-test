@@ -2,7 +2,13 @@
 
 nice_res=$(nice -n 5 $UNDER_TEST -c "nice")
 if [ "$nice_res" != 5 ]; then
-  >&2 echo "nice value not set correctly"
+  >&2 echo "nice value not set correctly #1: $nice_res"
+  exit 1
+fi
+
+nice_res=$($UNDER_TEST -c "nice -n 5 bash -c "nice"")
+if [ "$nice_res" != 5 ]; then
+  >&2 echo "nice value not set correctly #2: $nice_res"
   exit 1
 fi
 
