@@ -51,7 +51,7 @@ do
   do
     if [[ $each_assign =~ [Pp]roject1|[Aa]ssign1 ]]
     then
-      find "$each_assign" -perm +111 -type f | while read line; do
+      find "$each_assign" -perm /111 -type f | while read line; do
         # echo "---" $each_assign
         export UNDER_TEST=$line
         run_tests "$each_assign"
