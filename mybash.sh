@@ -7,9 +7,8 @@ yellow='\x1B[0;33m'
 blue='\x1B[0;34m'
 endColor='\x1B[0m'
 
+assign_dir=$1
 test_dir=./tests
-# assign_dir=/home/gkiko/Desktop
-assign_dir=./assigns
 out_dir=outs/
 err_dir=errors/
 
@@ -45,17 +44,11 @@ run_tests () {
 
 }
 
-for each_group in $assign_dir/*
-do
-  for each_assign in $each_group/*
-  do
-    if [[ $each_assign =~ [Pp]roject1|[Aa]ssign1 ]]
-    then
-      find "$each_assign" -perm /111 -type f | while read line; do
-        # echo "---" $each_assign
-        export UNDER_TEST=$line
-        run_tests "$each_assign"
-      done
-    fi
-  done
-done
+elf_under_test=$(find "$assign_dir" -perm /111 -type f | head -n1)
+if ! [[ -x "$elf_under_test" ]]
+then
+    echo "File '$elf_under_test' is not executable or found"
+fi
+
+export UNDER_TEST=$elf_under_test
+run_tests "$assign_dir"

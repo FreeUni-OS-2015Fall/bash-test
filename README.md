@@ -1,10 +1,9 @@
 # bash-test
-You may need to change following values before running the script
 
-`test_dir`: holds tests files
+how to run
 
-`assign_dir`: holds submitted assignments
-
-`out_dir`/`err_dir`: created by script; holds test outputs
+```bash
+./mybash.sh ../os16/GroupD/Project1/
+```
 
 ![dir list](img/Screenshot from 2015-09-14 15:55:30.png)
