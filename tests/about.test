@@ -1,5 +1,10 @@
 #! /bin/bash
 
-$UNDER_TEST -c "?"
+res=$($UNDER_TEST -c "?")
+echo $res
+if [ -z $res ]; then
+  >&2 echo "? output is empty"
+  exit 1
+fi
 
 exit $?
