@@ -3,12 +3,23 @@
 tmp_dir=$(mktemp -d)
 echo "created temp dir $tmp_dir"
 
+status=0
+
 val=$($UNDER_TEST -c "cd $tmp_dir;/bin/pwd")
-if [ "$val" = "$tmp_dir" ]
-then
-  status=0
-else
+if [ "$val" != "$tmp_dir" ]; then
   >&2 echo "pwd from $tmp_dir returned $val"
+  status=1
+fi
+
+val=$($UNDER_TEST -c "cd $tmp_dir;cd ././././;/bin/pwd")
+if [ "$val" != "$tmp_dir" ]; then
+  >&2 echo "pwd from $tmp_dir/././././ returned $val"
+  status=1
+fi
+
+val=$($UNDER_TEST -c "cd $tmp_dir;mkdir bla;cd bla;mkdir blu;cd blu;cd .././.././;/bin/pwd")
+if [ "$val" != "$tmp_dir" ]; then
+  >&2 echo "pwd from $tmp_dir/bla/blu/.././.././ returned $val"
   status=1
 fi
 
