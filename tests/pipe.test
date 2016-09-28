@@ -10,9 +10,20 @@ $UNDER_TEST -c "ls -l /etc | tail -n +2 | sort" > $tmp_file2
 cmp --silent $tmp_file1 $tmp_file2
 cmp_status=$?
 if [ "$cmp_status" != 0 ]; then
-  >&2 echo "pipe results differ"
+  >&2 echo "pipe results differ ls -l /etc | tail -n +2 | sort"
   exit 1
 fi
+
+(echo Bla && ls -l /etc | sort -r | wc -l || echo Blu) > $tmp_file1
+$UNDER_TEST -c "echo Bla && ls -l /etc | sort -r | wc -l || echo Blu" > $tmp_file2
+
+cmp --silent $tmp_file1 $tmp_file2
+cmp_status=$?
+if [ "$cmp_status" != 0 ]; then
+  >&2 echo "pipe results differ echo Bla && ls -l /etc | sort -r | wc -l || echo Blu"
+  exit 1
+fi
+
 
 rm $tmp_file2 $tmp_file1
 exit 0
