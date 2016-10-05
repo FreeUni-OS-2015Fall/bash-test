@@ -1,29 +1,20 @@
 #! /bin/bash
 
-tmp_file1=$(mktemp)
-tmp_file2=$(mktemp)
-echo "created tmp files $tmp_file1 $tmp_file2"
+status=0
+res1=$(ls -l /tmp | tail -n +2 | sort)
+res2=$($UNDER_TEST -c "ls -l /tmp | tail -n +2 | sort")
 
-ls -l /etc | tail -n +2 | sort > $tmp_file1
-$UNDER_TEST -c "ls -l /etc | tail -n +2 | sort" > $tmp_file2
-
-cmp --silent $tmp_file1 $tmp_file2
-cmp_status=$?
-if [ "$cmp_status" != 0 ]; then
-  >&2 echo "pipe results differ ls -l /etc | tail -n +2 | sort"
-  exit 1
+if [[ "$res1" != "$res2" ]]; then
+  >&2 echo "pipe results differ ls -l /tmp | tail -n +2 | sort"
+  status=1
 fi
 
-(echo Bla && ls -l /etc | sort -r | wc -l || echo Blu) > $tmp_file1
-$UNDER_TEST -c "echo Bla && ls -l /etc | sort -r | wc -l || echo Blu" > $tmp_file2
+res1=$(echo Bla && ls -l /tmp | sort -r | wc -l || echo Blu)
+res1=$($UNDER_TEST -c "echo Bla && ls -l /tmp | sort -r | wc -l || echo Blu")
 
-cmp --silent $tmp_file1 $tmp_file2
-cmp_status=$?
-if [ "$cmp_status" != 0 ]; then
-  >&2 echo "pipe results differ echo Bla && ls -l /etc | sort -r | wc -l || echo Blu"
-  exit 1
+if [[ "$res1" != "$res2" ]]; then
+  >&2 echo "pipe results differ echo Bla && ls -l /tmp | sort -r | wc -l || echo Blu"
+  status=1
 fi
 
-
-rm $tmp_file2 $tmp_file1
-exit 0
+exit $status
