@@ -10,7 +10,7 @@ if [[ "$res1" != "$res2" ]]; then
 fi
 
 res1=$(echo Bla && ls -l /tmp | sort -r | wc -l || echo Blu)
-res1=$($UNDER_TEST -c "echo Bla && ls -l /tmp | sort -r | wc -l || echo Blu")
+res2=$($UNDER_TEST -c "echo Bla && ls -l /tmp | sort -r | wc -l || echo Blu")
 
 if [[ "$res1" != "$res2" ]]; then
   >&2 echo "pipe results differ echo Bla && ls -l /tmp | sort -r | wc -l || echo Blu"
