@@ -2,15 +2,16 @@
 
 res=0
 
-echo_res=$($UNDER_TEST -c "echo test 123")
-if [ "$echo_res" != "test 123" ] ; then
-  >&2 echo "echo output not qeual: <$echo_res>"
+export TEST_123="some_str"
+echo_res=$($UNDER_TEST -c "echo $TEST_123")
+if [ "$echo_res" != "some_str" ] ; then
+  >&2 echo "exported var not equal: <$echo_res>"
   res=1
 fi
 
-export TEST_123="export var exmaple"
-echo_res=$($UNDER_TEST -c "echo $TEST_123")
-if [ "$echo_res" != "export var exmaple" ] ; then
+echo_res=$($UNDER_TEST -c "export bla=1 && env | grep bla")
+echo $echo_res
+if [ "$echo_res" != "bla=1" ] ; then
   >&2 echo "exported var not equal: <$echo_res>"
   res=1
 fi
