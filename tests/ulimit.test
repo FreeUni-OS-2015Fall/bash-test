@@ -26,15 +26,15 @@ do
   fi
 done
 
-ulimit_res=$($UNDER_TEST -c "ulimit -n 1025; ulimit -n")
-if [ $ulimit_res -ne 1025 ]; then
-  >&2 echo "ulimit -n returned incorrect value"
+ulimit_res=$($UNDER_TEST -c "ulimit -n 1023; ulimit -n")
+if [ $ulimit_res -ne 1023 ]; then
+  >&2 echo "ulimit -n returned incorrect value $ulimit_res"
   res=1
 fi
 
-ulimit_res=$(ulimit -s 100; $UNDER_TEST -c "ulimit -s")
-if [ $ulimit_res -ne 100 ]; then
-  >&2 echo "ulimit -s returned incorrect value"
+ulimit_res=$(ulimit -s 8191; $UNDER_TEST -c "ulimit -s")
+if [ $ulimit_res -ne 8191 ]; then
+  >&2 echo "ulimit -s returned incorrect value $ulimit_res"
   res=1
 fi
 

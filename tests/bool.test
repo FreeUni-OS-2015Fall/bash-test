@@ -1,7 +1,7 @@
 #! /bin/bash
 
-bool_res1=$(ls none_existing_dir || echo no dir)
-bool_res=$($UNDER_TEST -c "ls none_existing_dir || echo no dir")
+bool_res1=$(ls bla || echo no dir)
+bool_res=$($UNDER_TEST -c "ls bla || echo no dir")
 
 final_res=0
 if [ "$bool_res" != "$bool_res1" ]; then
